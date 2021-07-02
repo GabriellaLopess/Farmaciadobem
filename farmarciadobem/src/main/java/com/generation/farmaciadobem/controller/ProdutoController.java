@@ -22,42 +22,44 @@ import com.generation.farmaciadobem.repository.ProdutoRepository;
 @RequestMapping("/produtos")
 @CrossOrigin("*")
 public class ProdutoController {
-
+	
 	@Autowired
-	private ProdutoRepository produtoRepository;
-
+	private ProdutoRepository repository;
+	
 	@GetMapping
-	public ResponseEntity<List<Produto>> GetAll() {
-		return ResponseEntity.ok(produtoRepository.findAll());
+	public ResponseEntity<List<Produto>> GetAll(){
+		
+		return ResponseEntity.ok(repository.findAll());
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Produto> GetById(@PathVariable long id) {
-		return produtoRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<Produto> GetById(@PathVariable long id){
+		
+		return repository.findById(id).map(resp -> ResponseEntity.ok(resp)).orElse(ResponseEntity.notFound().build());
 	}
-
-	@GetMapping("/produtos/{nomeProduto}")
-	public ResponseEntity<List<Produto>> GetByProduto(@PathVariable String nomeProduto) {
-		return ResponseEntity.ok(produtoRepository.findAllByNomeProdutoContainingIgnoreCase(nomeProduto));
-
+	
+	@GetMapping("/nome/{nome}")
+	public ResponseEntity<List<Produto>> GetByNome(@PathVariable String nome){
+		
+		return ResponseEntity.ok(repository.findAllByNomeContainingIgnoreCase(nome));
 	}
-
+	
 	@PostMapping
-	public ResponseEntity<Produto> post(@RequestBody Produto produto) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
-
+	public ResponseEntity<Produto> post (@RequestBody Produto produto){
+		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(produto));
+		
 	}
-
+	
 	@PutMapping
-	public ResponseEntity<Produto> put(@RequestBody Produto produto) {
-		return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto));
-
+	public ResponseEntity<Produto> put (@RequestBody Produto produto){
+		return ResponseEntity.status(HttpStatus.OK).body(repository.save(produto));
+		
 	}
-
+	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
-		produtoRepository.deleteById(id);
+		repository.deleteById(id);
+		
 	}
 
 }
